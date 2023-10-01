@@ -1,0 +1,73 @@
+---
+title: "Homework 2 Peer Commentary!"
+author: "Jimmy Erkens"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Jimmy's Commentary
+
+1. Get some comments going! I had to run each line to figure out what was going on, which is fine, but it's nice to know (without thinking) what the code is going to do before running it.
+
+2. Nice use of `barplot()`! I always forget this function exists when making `base` R plots. I wish I ran with this function over `plot()`
+
+3. Make sure you have a pic of the titi monkey and correct formatting for when you submit a final version! Feel free to snoop on my code to get some ideas for syntax and whatnot. I also had some issues with `YAML` or markdown formatting for an image.
+
+4. Make sure each random draw for `rpois()` is the same each time you run the document! You can use `set.seed()` to ensure it runs the same each time, just choose a number (I always pick my birthday for consistency).
+
+5. NOTE: there were no comments, so all comments here are my own <3
+
+
+
+Every Saturday morning, at the same time, a primatologist goes and sits in the forest to listen for titi monkey calls, counting the number of calls they hear in a 2 hour window from 5am to 7am. Based on previous knowledge, she believes that the mean number of calls she will hear in that time is exactly 15. Let X represent the appropriate Poisson random variable of the number of calls heard in each monitoring session.
+
+
+## What is the probability that she will hear more than 8 calls during any given session?
+
+```{r}
+X=8 # consider using "<-" over "=", outside of functions "=" gets confused with what's in the local and global environments
+1-ppois(q=X, lambda=15) # Jimmy here, comment what's going on, 
+```
+
+## What is the probability that she will hear no calls in a session?
+```{r}
+X=0
+dpois(X, lambda = 15) # nice use of dpois! 
+# would consider using ppois() but it doesn't matter since poisson data is nonnegative
+```
+
+
+## What is the probability that she will hear exactly 3 calls in a session?
+```{r}
+X<-3 
+dpois(X, lambda=15)
+```
+
+## Plot the relevant Poisson mass function over the values in range 0 ≤ x ≤ 30.
+```{r}
+pmf<-barplot(dpois(0:30, lambda = 15), names.arg = 0:30, ylab = "Poisson Mass Function of Titi Calls", xlab = "X Number of Calls")
+# solid plot! Would change y title though, ylab = "Probabilities", main = "Theoretical Poisson PMF of Titi Calls"
+```
+
+
+## Simulate 104 results from this distribution (i.e., 2 years of Saturday monitoring sessions). 
+
+```{r}
+twoyr<-rpois(104, lambda = 15) # consider setting a seed
+twoyr
+```
+
+## Plot the simulated results using hist() and use xlim() to set the horizontal limits to be from 0 to 30. 
+
+```{r}
+htwoyr<-hist(twoyr, xlim = c(1,30), xlab = "Number of Calls", main = "Two Years of Simulated Calls") 
+# hist is for data vis, idk if it's really necessary to assign to a variable
+```
+## How does your histogram compare to the shape of the probability mass function you plotted above?
+```{r}
+par(mfrow= c(1,2))
+barplot(dpois(0:30, lambda = 15), names.arg = 0:30, ylab = "Poisson Mass Function of Titi Calls", xlab = "X Number of Calls")
+hist(twoyr, xlim = c(1,30), xlab = "Number of Calls", main = "Two Years of Simulated Calls")
+```
+
+The histogram based on the simulated years of calls is has a more irregular shape and is skewed more than the poisson mass function version. The poisson version has the most frequency at the mean of 15 while the simulated version actually dips at the mean. 

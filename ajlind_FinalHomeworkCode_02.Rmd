@@ -1,0 +1,71 @@
+---
+title: "Homework 2-Titis in the Mist"
+author: "Angelique J. Lindberg"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    toc: true
+---
+
+![Curious Titi Monkey!](https://cms.londonzoo.org/sites/default/files/styles/responsive/public/720/840/1/2022-11/red-titi-monkey-03-WR.jpg)
+
+## Background
+
+Every Saturday morning, at the same time, a primatologist goes and sits in the forest to listen for titi monkey calls, counting the number of calls they hear in a 2 hour window from 5am to 7am. Based on previous knowledge, she believes that the mean number of calls she will hear in that time is exactly 15. Let X represent the appropriate Poisson random variable of the number of calls heard in each monitoring session.
+
+
+## What is the probability that she will hear more than 8 calls during any given session?
+
+To run probability for counts like how often something is occurring in a time frame, we want to use the Poisson Distribution Model! So we know the function will be `rpois()`, `dpois()`, `ppois()`, or `qpois()`. For this question, we need `ppois()` because we want a cumulative probability of the calls occuring and we want 1-`ppois()` because we want all the probabilities more than eight, not less than. 
+```{r}
+X<-8
+1-ppois(q=X, lambda=15)
+```
+So, the probability that she will hear more than 8 calls in a session is 0.96.
+
+## What is the probability that she will hear no calls in a session?
+For this one, I'm going to use `dpois()` because I want the probability of exactly 0 calls (not cumulative). 
+```{r}
+X<-0
+dpois(X, lambda = 15)
+```
+The probability that she will hear no calls is 3.06e-07.
+
+## What is the probability that she will hear exactly 3 calls in a session?
+Same as the last question, I'm going to use `dpois()` for an exact probability.
+```{r}
+X<-3
+dpois(X, lambda=15)
+```
+
+## Plot the relevant Poisson mass function over the values in range 0 ≤ x ≤ 30.
+
+```{r}
+pmf<-barplot(dpois(0:30, lambda = 15), names.arg = 0:30, main =  "Thereotical Poisson Mass Function of Titi Calls", xlab = "X Number of Calls", ylab = "Probabilities")
+```
+In this plot, you can see that the highest probability is at lambda, 15.
+
+## Simulate 104 results from this distribution (i.e., 2 years of Saturday monitoring sessions). 
+
+```{r}
+set.seed(923)
+twoyr<-rpois(104, lambda = 15)
+twoyr
+```
+## Plot the simulated results using hist() and use xlim() to set the horizontal limits to be from 0 to 30. 
+
+```{r}
+hist(twoyr, xlim = c(1,30), xlab = "Number of Calls", main = "Two Years of Simulated Calls")
+```
+## How does your histogram compare to the shape of the probability mass function you plotted above?
+```{r}
+par(mfrow= c(1,2))
+barplot(dpois(0:30, lambda = 15), names.arg = 0:30, ylab = "Poisson Mass Function of Titi Calls", xlab = "X Number of Calls")
+hist(twoyr, xlim = c(1,30), xlab = "Number of Calls", main = "Two Years of Simulated Calls")
+```
+
+The histogram based on the simulated years of calls is has a more irregular shape and is skewed more than the poisson mass function version. The poisson version has the most frequency at the mean of 15 while the simulated version actually dips around the mean and doesn't gradually increase. 
+
+## Reflection
+Jimmy's commentary was really excellent and helpful. I was so focused on making sure I understood everything, I completely forgot to provide adequate commentary of what I was doing and how. I also forgot my Titi monkey photo, which I remembered while commenting. I appreciated getting some positive feedback as well, that was reassuring. I learned a lot from looking at and running his code as well, even as simple a how to imbed a function like this (`ppois()`). The specific comments improved my code as well, I think. Very positive experience!
